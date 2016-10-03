@@ -5,10 +5,17 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import ca.polymtl.inf4410.tp1.shared.CustomFile;
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
 
 public class Server implements ServerInterface {
+	
+	private int uniqueId = 0;
+	private List<CustomFile> listOfElements;
 
 	public static void main(String[] args) {
 		Server server = new Server();
@@ -17,6 +24,7 @@ public class Server implements ServerInterface {
 
 	public Server() {
 		super();
+		listOfElements = new ArrayList<CustomFile>();
 	}
 
 	private void run() {
@@ -41,12 +49,57 @@ public class Server implements ServerInterface {
 		}
 	}
 
-	/*
-	 * Méthode accessible par RMI. Additionne les deux nombres passés en
-	 * paramètre.
-	 */
+	/** Generate an unique id for each client who connect to server. The id increment for every new client */
 	@Override
-	public int execute(int a, int b) throws RemoteException {
-		return a + b;
+	public int generateClientId() throws RemoteException {
+		uniqueId++;
+		return uniqueId;
+	}
+	
+	/** Create an object file in the list of all files in the server  */
+	public boolean create(String name) throws RemoteException{
+		for (int i = 0; i < listOfElements.size(); i++) {
+			if(listOfElements.get(i).getName() == name){
+				return false;
+			}
+		}
+		
+		listOfElements.add(new CustomFile(name));
+		return true;
+	}
+	
+	public Map<String,String> list() throws RemoteException{
+		ArrayList<ArrayList<String>> k=new ArrayList();
+        ArrayList<String> l=new ArrayList();
+        for (int i = 0; i < listOfElements.size(); i++) {
+        	
+        }
+		return null;
+	}
+
+	@Override
+	public ArrayList<CustomFile> syncLocalDir() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomFile get(String name, int checkSum) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean lock(String name, int clientId, int checkSum)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String push(String name, byte[] content, int clientId)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

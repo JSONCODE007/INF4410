@@ -20,9 +20,7 @@ public class Client {
 		client.run();
 	}
 
-	FakeServer localServer = null; // Pour tester la latence d'un appel de
-									// fonction normal.
-	private ServerInterface localServerStub = null;
+	
 	private ServerInterface distantServerStub = null;
 
 	public Client(String distantServerHostname) {
@@ -32,8 +30,6 @@ public class Client {
 			System.setSecurityManager(new SecurityManager());
 		}
 
-		localServer = new FakeServer();
-		localServerStub = loadServerStub("127.0.0.1");
 
 		if (distantServerHostname != null) {
 			distantServerStub = loadServerStub(distantServerHostname);
@@ -41,11 +37,8 @@ public class Client {
 	}
 
 	private void run() {
-		appelNormal();
 
-		if (localServerStub != null) {
-			appelRMILocal();
-		}
+		System.out.println("Client started" );
 
 		if (distantServerStub != null) {
 			appelRMIDistant();
@@ -70,39 +63,13 @@ public class Client {
 		return stub;
 	}
 
-	private void appelNormal() {
-		long start = System.nanoTime();
-		int result = localServer.execute(4, 7);
-		long end = System.nanoTime();
-
-		System.out.println("Temps écoulé appel normal: " + (end - start)
-				+ " ns");
-		System.out.println("Résultat appel normal: " + result);
-	}
-
-	private void appelRMILocal() {
-		try {
-			long start = System.nanoTime();
-			int result = localServerStub.execute(4, 7);
-			long end = System.nanoTime();
-
-			System.out.println("Temps écoulé appel RMI local: " + (end - start)
-					+ " ns");
-			System.out.println("Résultat appel RMI local: " + result);
-		} catch (RemoteException e) {
-			System.out.println("Erreur: " + e.getMessage());
-		}
-	}
 
 	private void appelRMIDistant() {
 		try {
 			long start = System.nanoTime();
-			int result = distantServerStub.execute(4, 7);
+			int result = distantServerStub.generateClientId();
 			long end = System.nanoTime();
-
-			System.out.println("Temps écoulé appel RMI distant: "
-					+ (end - start) + " ns");
-			System.out.println("Résultat appel RMI distant: " + result);
+			System.out.println("Client id = " + result);
 		} catch (RemoteException e) {
 			System.out.println("Erreur: " + e.getMessage());
 		}
