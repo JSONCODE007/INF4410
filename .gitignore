@@ -12,3 +12,7 @@
 hs_err_pid*
 
 *.tar.gz
+
+.DS_Store
+
+bin
