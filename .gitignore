@@ -15,4 +15,8 @@ hs_err_pid*
 
 .DS_Store
 
-bin
+bin/
+
+build.xml
+
+
