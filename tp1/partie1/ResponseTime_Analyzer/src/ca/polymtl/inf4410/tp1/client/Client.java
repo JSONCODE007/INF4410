@@ -11,10 +11,13 @@ import ca.polymtl.inf4410.tp1.shared.ServerInterface;
 public class Client {
 	public static void main(String[] args) {
 		String distantHostname = null;
-		int taille = 1;
+		int taille = 0;
         byte[] byteArray = null;
 		if (args.length > 0) {
 			distantHostname = args[0];
+		}
+		if(args.length > 1)
+		{
 			taille = Integer.parseInt(args[1]);
 		}
 
@@ -42,7 +45,7 @@ public class Client {
 			distantServerStub = loadServerStub(distantServerHostname);
 		}
 		
-		byteArray = new byte[taille];
+		byteArray = new byte[(int)Math.pow(10.0, (double)taille)];
 		
 	}
 

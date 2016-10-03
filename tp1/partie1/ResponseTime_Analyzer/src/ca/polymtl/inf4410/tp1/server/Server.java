@@ -35,9 +35,9 @@ public class Server implements ServerInterface {
 			System.err
 					.println("Impossible de se connecter au registre RMI. Est-ce que rmiregistry est lancé ?");
 			System.err.println();
-			System.err.println("Erreur: " + e.getMessage());
+			System.err.println("Erreur1: " + e.getMessage());
 		} catch (Exception e) {
-			System.err.println("Erreur: " + e.getMessage());
+			System.err.println("Erreur2: " + e.getMessage());
 		}
 	}
 
