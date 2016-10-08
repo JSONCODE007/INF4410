@@ -1,10 +1,11 @@
 package ca.polymtl.inf4410.tp1.shared;
 
 public class CustomFile {
-	private String name;
-	private int checkSum;
-	private boolean isLocked;
-	private byte[] content;
+	
+	private String _name;
+	private int _checkSum;
+	private boolean _isLocked;
+	private byte[] _content;
 	
 	
 	/**
@@ -13,15 +14,20 @@ public class CustomFile {
 	  * @param name (required) name of the file to create
 	  */
 	public CustomFile(String name) {
-		this.name = name;
-		this.checkSum = 0;
-		this.isLocked = false;	
-		this.content = null;
+		this._name = name;
+		this._checkSum = 0;
+		this._isLocked = false;	
+		this._content = null;
 	}
 	
-	/** Return name of the file  */
-	public String getName(){
-		return name;
+	public String getName() {
+		return _name;
+	}
+	public int getCheckSum() {
+		return _checkSum;
+	}
+	public byte[] getContent() {
+		return _content;
 	}
 
 }
