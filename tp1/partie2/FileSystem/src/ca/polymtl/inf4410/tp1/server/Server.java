@@ -60,6 +60,8 @@ public class Server implements ServerInterface {
 	public boolean create(String name) throws RemoteException{
 		System.out.println("given name -"+ name);
 		for (CustomFile customFile : listOfElements) {
+			System.out.println("comparaison name -"+ name +"et"+ customFile.getName());
+
 			if(customFile.getName() == name){
 			   System.out.println("name -"+ customFile.getName());
 			   return false;
