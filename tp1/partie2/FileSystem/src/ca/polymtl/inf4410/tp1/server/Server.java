@@ -62,7 +62,7 @@ public class Server implements ServerInterface {
 		if(listOfElements.size()>0) {
 			for (CustomFile customFile : listOfElements) {
 				System.out.println("comparaison name -"+ name +"et"+ customFile.getName());
-				if(customFile.getName() == name){
+				if(customFile.getName().equals(name)){
 					System.out.println("name -"+ customFile.getName());
 					return false;
 				}
