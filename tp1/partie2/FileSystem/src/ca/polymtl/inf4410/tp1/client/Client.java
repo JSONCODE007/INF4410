@@ -103,7 +103,9 @@ public class Client {
 			createTest();
 			break;
 		case "list":
-			
+			List<String> fileList = new ArrayList<String>();
+			fileList = distantServerStub.list();
+			System.out.print("the file list"+fileList);
 			break;
 		case "syncLocalDir":
 			

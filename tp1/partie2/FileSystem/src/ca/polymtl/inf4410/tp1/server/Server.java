@@ -70,13 +70,23 @@ public class Server implements ServerInterface {
 		return Constant.FILE_ADDED(name);
 	}
 
-	public Map<String,String> list() throws RemoteException{
-		ArrayList<ArrayList<String>> k=new ArrayList();
-		ArrayList<String> l = new ArrayList();
-		for (int i = 0; i < listOfElements.size(); i++) {
+	public List<String> list() throws RemoteException{
+		List<String> fileList = new ArrayList<String>();
 
+		if(listOfElements.size() >0){
+			for(CustomFile customFile : listOfElements){
+				if(customFile.isLocked()){
+					fileList.add(Constant.LOCKED(customFile.getName(),customFile.getLockedBy()));
+				}else{
+					fileList.add(Constant.NOT_LOCKED(customFile.getName()));
+
+				}
+			}
+		}else{
+			fileList.add(Constant.EMPTY_LIST);
 		}
-		return null;
+
+		return fileList;
 	}
 
 	@Override
