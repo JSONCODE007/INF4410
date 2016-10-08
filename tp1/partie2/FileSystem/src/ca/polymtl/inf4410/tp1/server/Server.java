@@ -58,19 +58,19 @@ public class Server implements ServerInterface {
 	
 	/** Create an object file in the list of all files in the server  */
 	public boolean create(String name) throws RemoteException{
-		for (int i = 0; i < listOfElements.size(); i++) {
-			if(listOfElements.get(i).getName() == name){
-				return false;
+		for (CustomFile customFile : listOfElements) {
+			if(customFile.getName() == name){
+			   System.out.println("name -"+ customFile.getName());
+			   return false;
 			}
 		}
-		
 		listOfElements.add(new CustomFile(name));
 		return true;
 	}
 	
 	public Map<String,String> list() throws RemoteException{
 		ArrayList<ArrayList<String>> k=new ArrayList();
-        ArrayList<String> l=new ArrayList();
+        ArrayList<String> l = new ArrayList();
         for (int i = 0; i < listOfElements.size(); i++) {
         	
         }
