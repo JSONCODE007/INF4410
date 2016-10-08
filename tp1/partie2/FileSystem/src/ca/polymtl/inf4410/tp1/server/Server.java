@@ -58,6 +58,7 @@ public class Server implements ServerInterface {
 	
 	/** Create an object file in the list of all files in the server  */
 	public boolean create(String name) throws RemoteException{
+		System.out.println("given name -"+ name);
 		for (CustomFile customFile : listOfElements) {
 			if(customFile.getName() == name){
 			   System.out.println("name -"+ customFile.getName());
