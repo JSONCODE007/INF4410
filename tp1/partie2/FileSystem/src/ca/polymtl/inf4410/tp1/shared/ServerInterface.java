@@ -20,7 +20,7 @@ public interface ServerInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	boolean create(String name)throws RemoteException;
+	String create(String name)throws RemoteException;
 	
 	
 	/**

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ca.polymtl.inf4410.tp1.shared.Constant;
 import ca.polymtl.inf4410.tp1.shared.CustomFile;
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
 
@@ -57,19 +58,16 @@ public class Server implements ServerInterface {
 	}
 
 	/** Create an object file in the list of all files in the server  */
-	public boolean create(String name) throws RemoteException{
-		System.out.println("given name -"+ name);
-		if(listOfElements.size()>0) {
+	public String create(String name) throws RemoteException{
+		if(listOfElements.size() > 0) {
 			for (CustomFile customFile : listOfElements) {
-				System.out.println("comparaison name -"+ name +"et"+ customFile.getName());
 				if(customFile.getName().equals(name)){
-					System.out.println("name -"+ customFile.getName());
-					return false;
+					return Constant.DUPLICATED_FILENAME;
 				}
 			}
 		}
 		listOfElements.add(new CustomFile(name));
-		return true;
+		return name+" ajouté";
 	}
 
 	public Map<String,String> list() throws RemoteException{
