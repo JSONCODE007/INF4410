@@ -67,7 +67,7 @@ public class Server implements ServerInterface {
 			}
 		}
 		listOfElements.add(new CustomFile(name));
-		return name+" ajouté";
+		return Constant.FILE_ADDED(name);
 	}
 
 	public Map<String,String> list() throws RemoteException{
