@@ -91,13 +91,21 @@ public class Server implements ServerInterface {
 
 	@Override
 	public ArrayList<CustomFile> syncLocalDir() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList<CustomFile>) listOfElements;
 	}
 
 	@Override
-	public CustomFile get(String name, int checkSum) throws RemoteException {
-		// TODO Auto-generated method stub
+	public CustomFile get(String name, String checkSum) throws RemoteException {
+		for(CustomFile customFile : listOfElements){
+			if(checkSum == "-1" && customFile.getName() == name){
+				return customFile;
+			}
+			
+			else if(customFile.getCheckSum() == checkSum && customFile.getName() == name){
+				return customFile;
+			}
+		}
+		
 		return null;
 	}
 

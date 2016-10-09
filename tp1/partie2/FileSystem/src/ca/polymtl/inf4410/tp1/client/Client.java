@@ -1,16 +1,25 @@
 package ca.polymtl.inf4410.tp1.client;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
 import ca.polymtl.inf4410.tp1.shared.CustomFile;
+import ca.polymtl.inf4410.tp1.shared.Constant;
 
 
 public class Client {
@@ -101,9 +110,54 @@ public class Client {
 				}
 				break;
 			case "syncLocalDir":
+				List<CustomFile> fileListDistant = new ArrayList<CustomFile>();
+				fileListDistant = distantServerStub.syncLocalDir();
+				for (CustomFile file : fileListDistant) {
+					FileOutputStream out = new FileOutputStream(file.getName());
+					out.write(file.getContent());
+					out.close();
+				}
 
 				break;
 			case "get":
+				
+				File f = new File(argument);
+				if(!f.exists()) { 
+					CustomFile getResult = distantServerStub.get(argument, "-1");
+					if(getResult!=null){
+						FileOutputStream out = new FileOutputStream(getResult.getName());
+						out.write(getResult.getContent());
+						out.close();
+					}
+					else{
+						System.out.println(Constant.FILE_DOESNT_EXIST);
+					}
+				}
+				
+				else{
+					MessageDigest md = MessageDigest.getInstance("MD5");
+					try (InputStream is = Files.newInputStream(Paths.get(argument));
+					     DigestInputStream dis = new DigestInputStream(is, md)) 
+					{
+					  /* Read decorated stream (dis) to EOF as normal... */
+					}
+					String digest = md.digest().toString();
+					
+					CustomFile getResult = distantServerStub.get(argument, digest);
+					
+					if(getResult!=null){
+						FileOutputStream out = new FileOutputStream(getResult.getName());
+						out.write(getResult.getContent());
+						out.close();
+					}
+					
+					else{
+						System.out.println(Constant.FILE_SAME);
+					}
+				}
+				
+				
+				
 
 				break;
 			case "lock":

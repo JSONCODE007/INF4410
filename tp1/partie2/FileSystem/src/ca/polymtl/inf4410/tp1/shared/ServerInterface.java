@@ -42,11 +42,11 @@ public interface ServerInterface extends Remote {
 	/**
 	 * 
 	 * @param name
-	 * @param checkSum
+	 * @param digest
 	 * @return
 	 * @throws RemoteException
 	 */
-	CustomFile get(String name, int checkSum) throws RemoteException;
+	CustomFile get(String name, String digest) throws RemoteException;
 	
 	/**
 	 * 
