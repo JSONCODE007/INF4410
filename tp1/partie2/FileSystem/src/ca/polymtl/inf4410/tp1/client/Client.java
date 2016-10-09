@@ -92,7 +92,6 @@ public class Client {
 			case "create":
 				String createResult = distantServerStub.create(argument);
 				System.out.println(createResult);
-				createTest();
 				break;
 			case "list":
 				List<String> fileList = new ArrayList<String>();
