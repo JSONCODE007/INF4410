@@ -2,7 +2,9 @@ package ca.polymtl.inf4410.tp1.client;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,6 +15,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +27,7 @@ import ca.polymtl.inf4410.tp1.shared.Constant;
 
 public class Client {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
 		String distantHostname = null;
 		String operation = null;
 		String argument =null;
@@ -60,7 +63,7 @@ public class Client {
 		}
 	}
 
-	private void run() {
+	private void run() throws NoSuchAlgorithmException, IOException {
 
 		System.out.println("Client started" );
 
@@ -87,9 +90,11 @@ public class Client {
 		return stub;
 	}
 	/**
+	 * @throws IOException 
+	 * @throws NoSuchAlgorithmException 
 	 * 
 	 */
-	private void performOperation(){
+	private void performOperation() throws IOException, NoSuchAlgorithmException{
 		System.out.println("------perform operation ------");
 		try {
 			switch(operation){
@@ -101,7 +106,7 @@ public class Client {
 			case "create":
 				String createResult = distantServerStub.create(argument);
 				System.out.println(createResult);
-				createTest();
+				//createTest();
 				break;
 			case "list":
 				List<String> fileList = new ArrayList<String>();
