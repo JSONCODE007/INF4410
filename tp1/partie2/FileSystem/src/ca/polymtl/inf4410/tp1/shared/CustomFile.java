@@ -57,12 +57,21 @@ public class CustomFile {
 		return lockedBy;
 	}
 	/***
-	 * 
-	 * @param clientId
+	 * lock a file 
+	 * @param clientId The genrated client id
 	 */
 	public void lock(int clientId) {
 		this.lockedBy = clientId;
 		this._isLocked  = true;
+	}
+	/***
+	 * unlock a locked file
+	 */
+	public void unlock() {
+		if(this._isLocked){
+			_isLocked = false;
+			this.lockedBy =0;
+		}
 	}
 
 }

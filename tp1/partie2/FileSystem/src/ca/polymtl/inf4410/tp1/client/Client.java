@@ -14,23 +14,23 @@ import ca.polymtl.inf4410.tp1.shared.CustomFile;
 
 
 public class Client {
-	
+
 	public static void main(String[] args) {
 		String distantHostname = null;
-        String operation = null;
-        String argument =null;
+		String operation = null;
+		String argument =null;
 		if (args.length > 0) {
 			distantHostname = args[0];
-			operation = args[1];
-			argument = args[2];
-			System.out.println("the operation is "+ operation);
+			operation = args.length>1?args[1]:null;
+			argument = args.length>2 ?args[2]:null;
+			System.out.println("current operation "+ operation);
 		}
-        
+
 		Client client = new Client(distantHostname,operation,argument);
 		client.run();
 	}
 
-	
+
 	private ServerInterface distantServerStub = null;
 	private String operation = null;
 	private String argument = null;
@@ -56,7 +56,7 @@ public class Client {
 		System.out.println("Client started" );
 
 		if (distantServerStub != null) {
-			appelRMIDistant();
+			performOperation();
 		}
 	}
 
@@ -68,7 +68,7 @@ public class Client {
 			stub = (ServerInterface) registry.lookup("server");
 		} catch (NotBoundException e) {
 			System.out.println("Erreur: Le nom '" + e.getMessage()
-					+ "' n'est pas défini dans le registre.");
+			+ "' n'est pas défini dans le registre.");
 		} catch (AccessException e) {
 			System.out.println("Erreur: " + e.getMessage());
 		} catch (RemoteException e) {
@@ -77,70 +77,46 @@ public class Client {
 
 		return stub;
 	}
-     
-	
-
-	private void appelRMIDistant() {
-	   performOperation();
-	}
-	
-	
 	/**
 	 * 
 	 */
 	private void performOperation(){
-		System.out.println("Client slslsddsl = " + operation);
+		System.out.println("------perform operation ------");
 		try {
-		switch(operation){
-		case "id":
-	        int result = distantServerStub.generateClientId();
-			System.out.println("Client id = " + result);
-			break;
-			
-		case "create":
-			String createResult = distantServerStub.create(argument);
-			System.out.println("Creation resulta = " + createResult);
-			createTest();
-			break;
-		case "list":
-			List<String> fileList = new ArrayList<String>();
-			fileList = distantServerStub.list();
-			System.out.print("the file list"+fileList);
-			break;
-		case "syncLocalDir":
-			
-			break;
-		case "get":
-			
-			break;
-		case "lock":
-			
-			break;
-		case "push":
-			
-			break;
-			
-		}
+			switch(operation){
+			case "id":
+				int result = distantServerStub.generateClientId();
+				System.out.println("Client id = " + result);
+				break;
+
+			case "create":
+				String createResult = distantServerStub.create(argument);
+				System.out.println(createResult);
+				createTest();
+				break;
+			case "list":
+				List<String> fileList = new ArrayList<String>();
+				fileList = distantServerStub.list();
+				for (String string : fileList) {
+					System.out.println(string);
+				}
+				break;
+			case "syncLocalDir":
+
+				break;
+			case "get":
+
+				break;
+			case "lock":
+
+				break;
+			case "push":
+
+				break;
+
+			}
 		}catch (RemoteException e) {
 			System.out.println("Erreur: " + e.getMessage());
 		}
 	}	
-	private void createTest(){
-		List<CustomFile> listOfElements =  new ArrayList<CustomFile>();
-	   listOfElements.add(new CustomFile("blablabl"));
-		boolean x = true;
-		String kopp="blablabl";
-		//listOfElements.add(new CustomFile("fuck you "));
-		if(listOfElements.size()>0){
-		for (CustomFile customFile : listOfElements) {
-			if(customFile.getName() == kopp)
-				x= false;
-			}
-		}else{
-			System.out.println("given array is empty");
-		}
-		if(x)
-			listOfElements.add(new CustomFile(kopp));
-		System.out.println("array size"+listOfElements.size());
-	}
 }
