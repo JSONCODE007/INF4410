@@ -137,7 +137,7 @@ public class Client {
 					}
 				}
 				else{
-					
+
 					String checkSum = Utils.getFileChecksum(f);
 					byte[] fileContent = distantServerStub.get(argument, checkSum);
 					System.out.println(checkSum);
@@ -161,19 +161,26 @@ public class Client {
 					configContent = Utils.getFileContent(clientFile);
 					//TODO:check if file is not altered if id it there exists
 					clientId = Integer.parseInt(new String(configContent));
-					
+
 				}else{
 					clientId = distantServerStub.generateClientId();
 					System.out.println("Client id = " + clientId);
 					configContent =  String.valueOf(clientId).getBytes();
 					Utils.WriteFileInClientDirectory(Constant.CLIENT_ID_FILE_NAME, configContent);
 				}
-                  
-				String fileCheckSum = Utils.getFileChecksum(new File(argument));  	
-                byte[] lockContent = distantServerStub.lock(argument, clientId, fileCheckSum);
+				File fileToLock = new File(argument);  
+				String fileCheckSum = Utils.getFileChecksum(fileToLock);  
+				byte[] lockContent = distantServerStub.lock(argument, clientId,fileCheckSum);
+				if(lockContent !=null){
+					Utils.WriteFileInClientDirectory(argument, lockContent);
+					System.out.println(Constant.FILE_IN_EDIT_STATE(argument));
+				}else{
+					System.out.println("fichier verouille ou inexistant");
+				}
+
 				break;
 			case "push":
-				
+
 				break;
 
 			}

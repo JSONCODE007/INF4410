@@ -13,6 +13,7 @@ import java.util.Map;
 import ca.polymtl.inf4410.tp1.shared.Constant;
 import ca.polymtl.inf4410.tp1.shared.CustomFile;
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
+import ca.polymtl.inf4410.tp1.shared.Utils;
 
 public class Server implements ServerInterface {
 
@@ -110,18 +111,34 @@ public class Server implements ServerInterface {
 
 		System.out.println("je retourne null");
 		return null;
-		
+
 	}
 
 	@Override
 	public byte[] lock(String name, int clientId, String checkSum) throws RemoteException {
-
-		CustomFile file = null;
+		CustomFile fileToLock = null;
+		//file file to lock
 		for(CustomFile customFile : listOfElements){
 			if(customFile.getName()==name){
-				file = customFile;
+				fileToLock = customFile;
+				break; 
 			}
 		}
+		//if file was founded in the list of files
+		if(fileToLock!=null){
+			if(!fileToLock.isLocked()){
+				System.out.println("file not  locked");
+				if(!fileToLock.getCheckSum().equals(checkSum)){
+					System.out.println("new file to get  in lock-1");
+					return fileToLock.getContent();
+				}
+			}else{
+				System.out.println("file locked");
+			}
+			fileToLock.lock(clientId);
+		}
+		
+		System.out.println("file not founded");
 
 		return null;
 	}

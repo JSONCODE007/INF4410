@@ -17,7 +17,7 @@ public class Constant {
     
     public static String FILE_SAME="Votre fichier est deja a jours"; 
     
-    
+    public static String FILE_IN_EDIT_STATE (String fileName){return fileName+"en cours de modification";}
     //non du ficheir de configuration du client 
     public static String CLIENT_ID_FILE_NAME = "client_config";
     
