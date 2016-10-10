@@ -99,9 +99,11 @@ public class Server implements ServerInterface {
 	
 		for(CustomFile customFile : listOfElements){
 			if(checkSum == "-1" && customFile.getName().equals(name)){
+				System.out.println("new file to get -1");
 				return customFile.getContent();
 			}
 			else if(!customFile.getCheckSum().equals(checkSum) && customFile.getName().equals(name)){
+				System.out.println("new file to get checksum");
 				return customFile.getContent();
 			}
 		}
