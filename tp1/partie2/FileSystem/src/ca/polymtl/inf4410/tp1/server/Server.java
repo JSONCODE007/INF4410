@@ -100,7 +100,7 @@ public class Server implements ServerInterface {
 
 		for(CustomFile customFile : listOfElements){
 			if(customFile.getName().equals(name)){
-				if(checkSum == "-1" || (customFile.getCheckSum() !=null && !customFile.getCheckSum().equals(checkSum))){
+				if(checkSum.equals("-1") || (customFile.getCheckSum() != null && !customFile.getCheckSum().equals(checkSum))){
 					System.out.println("new file to get -1");
 					return customFile.getContent();
 				}
