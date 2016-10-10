@@ -18,7 +18,7 @@ public class CustomFile {
 		this._name = name;
 		this._checkSum = null;
 		this._isLocked = false;	
-		this._content = null;
+		this._content = new byte[0];
 		this.lockedBy = 0;//TODO:fix me please
 	}
 	/**
