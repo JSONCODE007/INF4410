@@ -17,7 +17,7 @@ public class CustomFile {
 	  */
 	public CustomFile(String name) {
 		this._name = name;
-		this._checkSum = null;
+		this._checkSum = "";
 		this._isLocked = false;	
 		this._content = new byte[0];
 		this.lockedBy = 0;//TODO:fix me please
