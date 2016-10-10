@@ -116,29 +116,22 @@ public class Server implements ServerInterface {
 
 	@Override
 	public byte[] lock(String name, int clientId, String checkSum) throws RemoteException {
-		CustomFile fileToLock = null;
 		//file file to lock
-		for(CustomFile customFile : listOfElements){
-			if(customFile.getName().equals(name)){
-				fileToLock = customFile;
-				break; 
-			}
-		}
-		//if file was founded in the list of files
-		if(fileToLock!= null){
-			System.out.println("file is founded");
-			if(!fileToLock.isLocked()){
-				System.out.println("file not  locked");
-				if(checkSum.equals("-1") || (!fileToLock.getCheckSum().equals(checkSum))){
-					System.out.println("new file to get  in lock-1");
-					return fileToLock.getContent();
+		for(int i = 0 ; i< listOfElements.size(); i++){
+			if(listOfElements.get(i).getName().equals(name)){
+				System.out.println("file is founded");
+				if(!listOfElements.get(i).isLocked()){
+					System.out.println("file not  locked");
+					if(checkSum.equals("-1") || (!listOfElements.get(i).getCheckSum().equals(checkSum))){
+						System.out.println("new file to get  in lock-1");
+						return listOfElements.get(i).getContent();
+					}
+				}else{
+					System.out.println("file is already locked by "+listOfElements.get(i).getLockedBy());
 				}
-			}else{
-				System.out.println("file is already locked by "+fileToLock.getLockedBy());
+				listOfElements.get(i).lock(clientId);
 			}
-			fileToLock.lock(clientId);
 		}
-		
 		System.out.println("file not founded");
 
 		return null;
