@@ -96,8 +96,11 @@ public class Server implements ServerInterface {
 
 	@Override
 	public byte[] get(String name, String checkSum) throws RemoteException {
-	
-		for(CustomFile customFile : listOfElements){
+		System.out.println("get has benn called");
+		byte[] blabla = {1,2,4,4,7};
+		return blabla;
+
+	/*	for(CustomFile customFile : listOfElements){
 			if(checkSum == "-1" && customFile.getName().equals(name)){
 				System.out.println("new file to get -1");
 				return customFile.getContent();
@@ -108,7 +111,7 @@ public class Server implements ServerInterface {
 			}
 		}
 		//on nenvoie le fichier que lorsqu'il est vraiment necessaire 
-		return null;
+		return null;*/
 	}
 
 	@Override
