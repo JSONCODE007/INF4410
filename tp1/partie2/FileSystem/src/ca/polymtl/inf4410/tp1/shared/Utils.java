@@ -45,4 +45,14 @@ public class Utils {
 	    //return complete hash
 	   return sb.toString();
 	}
+	
+	/***
+	 * 
+	 * @return
+	 */
+	public static  boolean WriteFileInClientDirectory(){
+		return false;
+	}
+	
+	
 }

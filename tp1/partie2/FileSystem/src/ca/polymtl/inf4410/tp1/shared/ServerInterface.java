@@ -46,7 +46,7 @@ public interface ServerInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	CustomFile get(String name, String digest) throws RemoteException;
+	byte[] get(String name, String digest) throws RemoteException;
 	
 	/**
 	 * 

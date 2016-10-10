@@ -42,6 +42,13 @@ public class CustomFile {
 	public byte[] getContent() {
 		return _content;
 	}
+	/**
+	 * 
+	 * @param _content
+	 */
+	public void setContent(byte[] _content) {
+		this._content = _content;
+	}
 	/***
 	 * 
 	 * @return

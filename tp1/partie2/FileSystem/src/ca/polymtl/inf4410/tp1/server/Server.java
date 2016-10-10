@@ -95,24 +95,30 @@ public class Server implements ServerInterface {
 	}
 
 	@Override
-	public CustomFile get(String name, String checkSum) throws RemoteException {
+	public byte[] get(String name, String checkSum) throws RemoteException {
+	
 		for(CustomFile customFile : listOfElements){
 			if(checkSum == "-1" && customFile.getName() == name){
-				return customFile;
+				return customFile.getContent();
 			}
-			
-			else if(customFile.getCheckSum() == checkSum && customFile.getName() == name){
-				return customFile;
+			else if(customFile.getCheckSum() != checkSum && customFile.getName() == name){
+				return customFile.getContent();
 			}
 		}
-		
+		//on nenvoie le fichier que lorsqu'il est vraiment necessaire 
 		return null;
 	}
 
 	@Override
-	public boolean lock(String name, int clientId, int checkSum)
-			throws RemoteException {
-		// TODO Auto-generated method stub
+	public boolean lock(String name, int clientId, int checkSum) throws RemoteException {
+		
+		CustomFile file = null;
+		for(CustomFile customFile : listOfElements){
+			  if(customFile.getName()==name){
+				  file = customFile;
+			  }
+		}
+       
 		return false;
 	}
 
@@ -120,6 +126,8 @@ public class Server implements ServerInterface {
 	public String push(String name, byte[] content, int clientId)
 			throws RemoteException {
 		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 }

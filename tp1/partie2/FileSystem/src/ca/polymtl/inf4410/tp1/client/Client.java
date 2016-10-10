@@ -127,37 +127,36 @@ public class Client {
 
 				break;
 			case "get":
+
 				File f = new File(argument);
 				if(!f.exists()) { 
-					CustomFile file = distantServerStub.get(argument, "-1");
-					if(file!=null){
-						FileOutputStream out = new FileOutputStream(file.getName());
-						out.write(file.getContent());
+					byte[] fileContent = distantServerStub.get(argument, "-1");
+					if(fileContent!=null){
+						FileOutputStream out = new FileOutputStream(argument);
+						out.write(fileContent);
 						out.close();;
 					}
 					else{
 						System.out.println(Constant.FILE_DOESNT_EXIST);
 					}
 				}
-				
 				else{
 					MessageDigest md = MessageDigest.getInstance("MD5");
-					
 					String digest = Utils.getFileChecksum(md,f);
-					
-					CustomFile getResult = distantServerStub.get(argument, digest);
+
+					byte[] fileContent = distantServerStub.get(argument, digest);
 					System.out.println(digest);
-					if(getResult!=null){
-						FileOutputStream out = new FileOutputStream(getResult.getName());
-						out.write(getResult.getContent());
+					if(fileContent!=null){
+						FileOutputStream out = new FileOutputStream(argument);
+						out.write(fileContent);
 						out.close();
 					}
-					
+
 					else{
 						System.out.println(Constant.FILE_SAME);
 					}
 				}
-			
+
 				break;
 			case "lock":
 
