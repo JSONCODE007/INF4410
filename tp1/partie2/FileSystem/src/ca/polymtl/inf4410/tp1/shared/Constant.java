@@ -8,7 +8,8 @@ public class Constant {
     
     public static String DUPLICATED_FILENAME= "Erreur! un fichier du meme nom existe deja";
     public static String FILE_ADDED(String fileName) {return  fileName+" ajoutÃ©. sur le serveur" ;}
-    
+    public static String FILE_CREATED(String fileName) {return  fileName+" creer. sur le serveur" ;}
+
     public static String NOT_LOCKED(String fileName) {return "* "+ fileName+" non verrouilleÌ�";}
     public static String LOCKED(String fileName,int clientId) {return "* "+fileName+" verrouilleÌ� par client "+clientId;}
     public static String LOCK_REQUIRED = "opeÌ�ration refuseÌ�e : vous devez verrouiller d'abord verrouiller le fichier.";

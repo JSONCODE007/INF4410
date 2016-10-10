@@ -161,10 +161,11 @@ public class Client {
 					Utils.WriteFileInClientDirectory(fileName, lockContent);
 					System.out.println(Constant.FILE_IN_EDIT_STATE(fileName));
 				}else{
-					System.out.println("fichier verouille par un autre utilisateur  ou inexistant sur le serveur!");
+					System.out.println("fichier inexistant ou verouiller par un autre utilisateur !");
 				}
 
 				break;
+				
 			case "push":
 
 				File fileToPush = new File(fileName);  

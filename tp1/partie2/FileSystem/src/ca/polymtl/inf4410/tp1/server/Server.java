@@ -70,7 +70,7 @@ public class Server implements ServerInterface {
 			}
 		}
 		listOfElements.add(new CustomFile(name));
-		return Constant.FILE_ADDED(name);
+		return Constant.FILE_CREATED(name);
 	}
 
 	public List<String> list() throws RemoteException{
