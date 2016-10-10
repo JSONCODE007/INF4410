@@ -15,8 +15,10 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.rmi.CORBA.Util;
 
@@ -114,9 +116,9 @@ public class Client {
 			case "syncLocalDir":
 				
 				List<CustomFile> fileListDistant = new ArrayList<CustomFile>();
-				fileListDistant = distantServerStub.syncLocalDir();
-				for (CustomFile file : fileListDistant) {
-					Utils.WriteFileInClientDirectory(file.getName(),file.getContent());
+				HashMap<String,byte[]> fileMap = distantServerStub.syncLocalDir();
+				for (Entry<String, byte[]> file : fileMap.entrySet()) {
+					Utils.WriteFileInClientDirectory(file.getKey(),file.getValue());
 				}
 
 				break;

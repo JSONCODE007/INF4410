@@ -3,6 +3,7 @@ package ca.polymtl.inf4410.tp1.shared;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public interface ServerInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	ArrayList<CustomFile> syncLocalDir() throws RemoteException;
+	HashMap<String,byte[]> syncLocalDir() throws RemoteException;
 	
 	/**
 	 * 

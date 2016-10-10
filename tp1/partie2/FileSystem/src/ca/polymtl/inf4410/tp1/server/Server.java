@@ -93,8 +93,14 @@ public class Server implements ServerInterface {
 	}
 
 	@Override
-	public ArrayList<CustomFile> syncLocalDir() throws RemoteException {
-		return (ArrayList<CustomFile>) listOfElements;
+	public HashMap<String,byte[]> syncLocalDir() throws RemoteException {
+		
+		HashMap<String,byte[]> fileMap = new HashMap<String,byte[]>();
+   	    for(CustomFile customFile : listOfElements){
+   	    	fileMap.put(customFile.getName(),customFile.getContent());
+   	    }
+	    return fileMap;
+       
 	}
 
 	@Override
@@ -109,7 +115,6 @@ public class Server implements ServerInterface {
 				}
 			}
 		}
-
 		System.out.println("je retourne null");
 		return null;
 
