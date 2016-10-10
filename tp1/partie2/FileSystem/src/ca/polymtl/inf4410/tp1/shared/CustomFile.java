@@ -49,6 +49,9 @@ public class CustomFile {
 	public void setContent(byte[] _content) {
 		this._content = _content;
 	}
+	public void setCheckSum(String _checkSum) {
+		this._checkSum = _checkSum;
+	}
 	/***
 	 * 
 	 * @return

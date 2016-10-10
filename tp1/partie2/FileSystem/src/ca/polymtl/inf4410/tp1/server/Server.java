@@ -6,6 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,43 +97,39 @@ public class Server implements ServerInterface {
 
 	@Override
 	public byte[] get(String name, String checkSum) throws RemoteException {
-		System.out.println("get has benn called");
-		byte[] blabla = {1,2,4,4,7};
-		return blabla;
 
-	/*	for(CustomFile customFile : listOfElements){
-			if(checkSum == "-1" && customFile.getName().equals(name)){
-				System.out.println("new file to get -1");
-				return customFile.getContent();
-			}
-			else if(!customFile.getCheckSum().equals(checkSum) && customFile.getName().equals(name)){
-				System.out.println("new file to get checksum");
-				return customFile.getContent();
-			}
-		}
-		//on nenvoie le fichier que lorsqu'il est vraiment necessaire 
-		return null;*/
-	}
-
-	@Override
-	public boolean lock(String name, int clientId, int checkSum) throws RemoteException {
-		
-		CustomFile file = null;
 		for(CustomFile customFile : listOfElements){
-			  if(customFile.getName()==name){
-				  file = customFile;
-			  }
+			if(customFile.getName().equals(name)){
+				if(checkSum == "-1" || customFile.getCheckSum() !=null && !customFile.getCheckSum().equals(checkSum) ){
+					System.out.println("new file to get -1");
+					return customFile.getContent();
+				}
+			}
 		}
-       
-		return false;
-	}
+			//TODO:erreru si le fichier nexiste pas 
+			//on nenvoie le fichier que lorsqu'il est vraiment necessaire 
+			return null;
+		}
 
-	@Override
-	public String push(String name, byte[] content, int clientId)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		
-		
-		return null;
+		@Override
+		public boolean lock(String name, int clientId, int checkSum) throws RemoteException {
+
+			CustomFile file = null;
+			for(CustomFile customFile : listOfElements){
+				if(customFile.getName()==name){
+					file = customFile;
+				}
+			}
+
+			return false;
+		}
+
+		@Override
+		public String push(String name, byte[] content, int clientId)
+				throws RemoteException {
+			// TODO Auto-generated method stub
+
+
+			return null;
+		}
 	}
-}
