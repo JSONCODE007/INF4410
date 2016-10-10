@@ -98,10 +98,10 @@ public class Server implements ServerInterface {
 	public byte[] get(String name, String checkSum) throws RemoteException {
 	
 		for(CustomFile customFile : listOfElements){
-			if(checkSum == "-1" && customFile.getName() == name){
+			if(checkSum == "-1" && customFile.getName().equals(name)){
 				return customFile.getContent();
 			}
-			else if(customFile.getCheckSum() != checkSum && customFile.getName() == name){
+			else if(!customFile.getCheckSum().equals(checkSum) && customFile.getName().equals(name)){
 				return customFile.getContent();
 			}
 		}
