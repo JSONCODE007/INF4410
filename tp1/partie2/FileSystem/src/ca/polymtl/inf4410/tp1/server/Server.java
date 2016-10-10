@@ -122,6 +122,7 @@ public class Server implements ServerInterface {
 				System.out.println("file is founded");
 				if(!listOfElements.get(i).isLocked()){
 					System.out.println("file not  locked");
+					listOfElements.get(i).lock(clientId);
 					if(checkSum.equals("-1") || (!listOfElements.get(i).getCheckSum().equals(checkSum))){
 						System.out.println("new file to get  in lock-1");
 						return listOfElements.get(i).getContent();
@@ -129,7 +130,6 @@ public class Server implements ServerInterface {
 				}else{
 					System.out.println("file is already locked by "+listOfElements.get(i).getLockedBy());
 				}
-				listOfElements.get(i).lock(clientId);
 			}
 		}
 		System.out.println("file not founded");
