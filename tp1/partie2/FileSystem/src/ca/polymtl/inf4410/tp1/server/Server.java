@@ -100,12 +100,13 @@ public class Server implements ServerInterface {
 
 		for(CustomFile customFile : listOfElements){
 			if(customFile.getName().equals(name)){
-				if(checkSum == "-1" || customFile.getCheckSum() !=null && !customFile.getCheckSum().equals(checkSum) ){
+				if(checkSum == "-1" || (customFile.getCheckSum() !=null && !customFile.getCheckSum().equals(checkSum))){
 					System.out.println("new file to get -1");
 					return customFile.getContent();
 				}
 			}
 		}
+		System.out.println("je retourne null");
 			//TODO:erreru si le fichier nexiste pas 
 			//on nenvoie le fichier que lorsqu'il est vraiment necessaire 
 			return null;

@@ -133,7 +133,7 @@ public class Client {
 					System.out.println("in a new please");
 					byte[] fileContent = distantServerStub.get(argument, "-1");
 					System.out.println("in a new please");
-					if(fileContent!=null){
+					if(fileContent!= null){
 						FileOutputStream out = new FileOutputStream(argument);
 						out.write(fileContent);
 						out.close();;
