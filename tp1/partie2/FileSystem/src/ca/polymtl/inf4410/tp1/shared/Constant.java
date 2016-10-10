@@ -16,7 +16,6 @@ public class Constant {
     public static String FILE_DOESNT_EXIST="Erreur! Le fichier n'existe pas sur le server"; 
     public static String LOCKED_BY_OTHER="Erreur! Le fichier est deja verouille pas un autre utilisateur"; 
     public static String FILE_SAME="Votre fichier est deja a jours"; 
-    public static String LOCK_BEFORE_PUSH="Errerur :Vous devez verrouiller un fichier avant de le push "; 
     
     public static String FILE_IN_EDIT_STATE (String fileName){return fileName+"en cours de modification";}
     //non du ficheir de configuration du client 

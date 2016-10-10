@@ -142,8 +142,8 @@ public class Server implements ServerInterface {
 	@Override
 	public String push(String name, byte[] content, int clientId) throws RemoteException {
 		for(int i = 0 ; i< listOfElements.size(); i++){
-			if(listOfElements.get(i).getName().equals(name)){
-				System.out.println("file is founded");
+			if(listOfElements.get(i).getName().equals(name)){			
+				
 				if(!listOfElements.get(i).isLocked()){
 					return Constant.NOT_LOCKED(name);
 				}else{

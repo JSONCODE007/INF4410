@@ -112,12 +112,11 @@ public class Client {
 				}
 				break;
 			case "syncLocalDir":
+				
 				List<CustomFile> fileListDistant = new ArrayList<CustomFile>();
 				fileListDistant = distantServerStub.syncLocalDir();
 				for (CustomFile file : fileListDistant) {
-					FileOutputStream out = new FileOutputStream(file.getName());
-					out.write(file.getContent());
-					out.close();
+					Utils.WriteFileInClientDirectory(file.getName(),file.getContent());
 				}
 
 				break;
@@ -182,16 +181,16 @@ public class Client {
 
 				break;
 			case "push":
-			    byte[] clientconfigContent = Utils.getFileContent(new File(Constant.CLIENT_ID_FILE_NAME));
+				byte[] clientconfigContent = Utils.getFileContent(new File(Constant.CLIENT_ID_FILE_NAME));
 				//TODO:check if file is not altered if id it there exists
 				int currentClientId = Integer.parseInt(new String(clientconfigContent));
-				
+
 				byte[] toPushContent  = Utils.getFileContent(new File(argument));
-                
+
 				String pushResponse = distantServerStub.push(argument, toPushContent, currentClientId);
-				
-				System.out.println(Utils.getByteArrayChecksum(toPushContent));
-				
+
+				System.out.println(pushResponse);
+
 				break;
 
 			}
