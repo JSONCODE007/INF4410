@@ -168,8 +168,10 @@ public class Client {
 					configContent =  String.valueOf(clientId).getBytes();
 					Utils.WriteFileInClientDirectory(Constant.CLIENT_ID_FILE_NAME, configContent);
 				}
+				
 				File fileToLock = new File(argument);  
-				String fileCheckSum = Utils.getFileChecksum(fileToLock);  
+				String fileCheckSum = fileToLock.exists() ? Utils.getFileChecksum(fileToLock) : "-1"; 
+				System.out.println("file to lock checsum"+fileCheckSum);
 				byte[] lockContent = distantServerStub.lock(argument, clientId,fileCheckSum);
 				if(lockContent !=null){
 					Utils.WriteFileInClientDirectory(argument, lockContent);

@@ -119,7 +119,7 @@ public class Server implements ServerInterface {
 		CustomFile fileToLock = null;
 		//file file to lock
 		for(CustomFile customFile : listOfElements){
-			if(customFile.getName()==name){
+			if(customFile.getName().equals(name)){
 				fileToLock = customFile;
 				break; 
 			}
@@ -128,12 +128,12 @@ public class Server implements ServerInterface {
 		if(fileToLock!=null){
 			if(!fileToLock.isLocked()){
 				System.out.println("file not  locked");
-				if(!fileToLock.getCheckSum().equals(checkSum)){
+				if(checkSum.equals("-1") || (!fileToLock.getCheckSum().equals(checkSum))){
 					System.out.println("new file to get  in lock-1");
 					return fileToLock.getContent();
 				}
 			}else{
-				System.out.println("file locked");
+				System.out.println("file is already locked by "+fileToLock.getLockedBy());
 			}
 			fileToLock.lock(clientId);
 		}
