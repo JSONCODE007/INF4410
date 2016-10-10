@@ -76,13 +76,11 @@ public class CustomFile {
 		this._isLocked  = true;
 	}
 	/***
-	 * unlock a locked file
+	 * unlock a  file
 	 */
 	public void unlock() {
-		if(this._isLocked){
 			_isLocked = false;
-			this.lockedBy =0;
-		}
+			 this.lockedBy =0;
 	}
 
 }

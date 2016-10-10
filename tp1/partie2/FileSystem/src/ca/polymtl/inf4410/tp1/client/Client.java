@@ -99,7 +99,6 @@ public class Client {
 		System.out.println("------perform operation ------");
 		try {
 			switch(operation){
-
 			case "create":
 				String createResult = distantServerStub.create(argument);
 				System.out.println(createResult);
@@ -152,6 +151,7 @@ public class Client {
 
 				break;
 			case "lock":
+
 				File clientFile = new File(Constant.CLIENT_ID_FILE_NAME);
 				int clientId =  -1;
 				byte[] configContent  = null;
@@ -168,7 +168,7 @@ public class Client {
 					configContent =  String.valueOf(clientId).getBytes();
 					Utils.WriteFileInClientDirectory(Constant.CLIENT_ID_FILE_NAME, configContent);
 				}
-				
+
 				File fileToLock = new File(argument);  
 				String fileCheckSum = fileToLock.exists() ? Utils.getFileChecksum(fileToLock) : "-1"; 
 				System.out.println("file to lock checsum"+fileCheckSum);
@@ -182,7 +182,16 @@ public class Client {
 
 				break;
 			case "push":
-
+			    byte[] clientconfigContent = Utils.getFileContent(new File(Constant.CLIENT_ID_FILE_NAME));
+				//TODO:check if file is not altered if id it there exists
+				int currentClientId = Integer.parseInt(new String(clientconfigContent));
+				
+				byte[] toPushContent  = Utils.getFileContent(new File(argument));
+                
+				String pushResponse = distantServerStub.push(argument, toPushContent, currentClientId);
+				
+				System.out.println(Utils.getByteArrayChecksum(toPushContent));
+				
 				break;
 
 			}

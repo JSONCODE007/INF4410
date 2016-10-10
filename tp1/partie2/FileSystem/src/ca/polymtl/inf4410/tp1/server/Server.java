@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +115,7 @@ public class Server implements ServerInterface {
 
 	}
 
+	//TODO:return errors propertly
 	@Override
 	public byte[] lock(String name, int clientId, String checkSum) throws RemoteException {
 		//file file to lock
@@ -138,11 +140,30 @@ public class Server implements ServerInterface {
 	}
 
 	@Override
-	public String push(String name, byte[] content, int clientId)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-
-
-		return null;
+	public String push(String name, byte[] content, int clientId) throws RemoteException {
+		for(int i = 0 ; i< listOfElements.size(); i++){
+			if(listOfElements.get(i).getName().equals(name)){
+				System.out.println("file is founded");
+				if(!listOfElements.get(i).isLocked()){
+					return Constant.NOT_LOCKED(name);
+				}else{
+					//TODO:client id is easy to hack 
+					if(listOfElements.get(i).getLockedBy() != clientId){
+						return Constant.LOCKED_BY_OTHER;
+					}else{
+						listOfElements.get(i).setContent(content);
+						listOfElements.get(i).unlock();
+						try {
+							listOfElements.get(i).setCheckSum(Utils.getByteArrayChecksum(content));
+						} catch (NoSuchAlgorithmException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						return Constant.FILE_ADDED(name);
+					}
+				}
+			}
+		}
+		return Constant.FILE_DOESNT_EXIST;
 	}
 }

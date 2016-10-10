@@ -51,7 +51,24 @@ public class Utils {
 	    //return complete hash
 	   return sb.toString();
 	}
-	
+	public static String getByteArrayChecksum(byte[] array) throws NoSuchAlgorithmException{
+		
+		MessageDigest digest = MessageDigest.getInstance("MD5");
+		 //Get the hash's bytes
+	    byte[] bytes = digest.digest(array);
+	     
+	    //This bytes[] has bytes in decimal format;
+	    //Convert it to hexadecimal format
+	    StringBuilder sb = new StringBuilder();
+	    for(int i=0; i< bytes.length ;i++)
+	    {
+	        sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+	    }
+	     
+	    //return complete hash
+	   return sb.toString();
+	   
+	}
 	/***
 	 * 
 	 * @return
