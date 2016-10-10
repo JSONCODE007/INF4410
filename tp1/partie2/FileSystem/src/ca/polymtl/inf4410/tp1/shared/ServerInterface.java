@@ -56,7 +56,7 @@ public interface ServerInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	boolean lock(String name, int clientId, int checkSum)throws RemoteException;
+	byte[] lock(String name, int clientId, String checkSum)throws RemoteException;
 	
 	/**
 	 * 

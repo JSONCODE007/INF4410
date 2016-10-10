@@ -99,10 +99,6 @@ public class Client {
 		System.out.println("------perform operation ------");
 		try {
 			switch(operation){
-			case "id":
-				int result = distantServerStub.generateClientId();
-				System.out.println("Client id = " + result);
-				break;
 
 			case "create":
 				String createResult = distantServerStub.create(argument);
@@ -134,24 +130,19 @@ public class Client {
 					byte[] fileContent = distantServerStub.get(argument, "-1");
 					System.out.println("in a new please");
 					if(fileContent!= null){
-						FileOutputStream out = new FileOutputStream(argument);
-						out.write(fileContent);
-						out.close();;
+						Utils.WriteFileInClientDirectory(argument,fileContent);
 					}
 					else{
 						System.out.println(Constant.FILE_DOESNT_EXIST);
 					}
 				}
 				else{
-					MessageDigest md = MessageDigest.getInstance("MD5");
-					String digest = Utils.getFileChecksum(md,f);
-
-					byte[] fileContent = distantServerStub.get(argument, digest);
-					System.out.println(digest);
+					
+					String checkSum = Utils.getFileChecksum(f);
+					byte[] fileContent = distantServerStub.get(argument, checkSum);
+					System.out.println(checkSum);
 					if(fileContent!=null){
-						FileOutputStream out = new FileOutputStream(argument);
-						out.write(fileContent);
-						out.close();
+						Utils.WriteFileInClientDirectory(argument, fileContent);
 					}
 
 					else{
@@ -161,10 +152,28 @@ public class Client {
 
 				break;
 			case "lock":
-
+				File clientFile = new File(Constant.CLIENT_ID_FILE_NAME);
+				int clientId =  -1;
+				byte[] configContent  = null;
+				//parse configuration file to get clietn id or generate new 
+				if(clientFile.exists()) { 
+					System.out.println("un fichier de config existe deja !");
+					configContent = Utils.getFileContent(clientFile);
+					//TODO:check if file is not altered if id it there exists
+					clientId = Integer.parseInt(new String(configContent));
+					
+				}else{
+					clientId = distantServerStub.generateClientId();
+					System.out.println("Client id = " + clientId);
+					configContent =  String.valueOf(clientId).getBytes();
+					Utils.WriteFileInClientDirectory(Constant.CLIENT_ID_FILE_NAME, configContent);
+				}
+                  
+				String fileCheckSum = Utils.getFileChecksum(new File(argument));  	
+                byte[] lockContent = distantServerStub.lock(argument, clientId, fileCheckSum);
 				break;
 			case "push":
-
+				
 				break;
 
 			}
@@ -172,4 +181,7 @@ public class Client {
 			System.out.println("Erreur: " + e.getMessage());
 		}
 	}	
+
+
+
 }

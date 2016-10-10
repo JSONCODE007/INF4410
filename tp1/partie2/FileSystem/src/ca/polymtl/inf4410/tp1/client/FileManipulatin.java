@@ -20,7 +20,6 @@ public class FileManipulatin {
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 		// TODO Auto-generated method stub
 		System.out.println("you know my name ? Bitch !");
-
 		/*//write file 
 		byte data[] = {1,2,3};
 		//FileOutputStream out = new FileOutputStream("bitzer");

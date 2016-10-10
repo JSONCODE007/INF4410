@@ -17,4 +17,8 @@ public class Constant {
     
     public static String FILE_SAME="Votre fichier est deja a jours"; 
     
+    
+    //non du ficheir de configuration du client 
+    public static String CLIENT_ID_FILE_NAME = "client_config";
+    
 }

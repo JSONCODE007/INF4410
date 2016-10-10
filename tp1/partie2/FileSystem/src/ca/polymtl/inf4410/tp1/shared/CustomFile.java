@@ -7,6 +7,7 @@ public class CustomFile {
 	private boolean _isLocked;
 	private byte[] _content;
 	private int lockedBy;
+
 	
 	
 	/**

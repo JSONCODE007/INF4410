@@ -2,8 +2,11 @@ package ca.polymtl.inf4410.tp1.shared;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Utils {
 	
@@ -13,9 +16,12 @@ public class Utils {
 	 * @param file
 	 * @return
 	 * @throws IOException
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public static String getFileChecksum(MessageDigest digest, File file) throws IOException
+	public static String getFileChecksum(File file) throws IOException, NoSuchAlgorithmException
 	{
+		MessageDigest digest = MessageDigest.getInstance("MD5");
+
 	    //Get file input stream for reading the file content
 	    FileInputStream fis = new FileInputStream(file);
 	     
@@ -49,10 +55,30 @@ public class Utils {
 	/***
 	 * 
 	 * @return
+	 * @throws IOException 
 	 */
-	public static  boolean WriteFileInClientDirectory(){
-		return false;
+	public static  void  WriteFileInClientDirectory(String name,byte[] content) throws IOException{
+		FileOutputStream out = new FileOutputStream(name);
+		out.write(content);
+		out.close();;
 	}
+	
+	/***
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
+	public static byte[]  getFileContent(File file) throws IOException{
+		byte[] bFile = new byte[(int) file.length()];
+
+		//convert file into array of bytes
+		FileInputStream fileInputStream = new FileInputStream(file);
+		fileInputStream.read(bFile);
+		fileInputStream.close();
+
+		return bFile;
+	}
+	
 	
 	
 }

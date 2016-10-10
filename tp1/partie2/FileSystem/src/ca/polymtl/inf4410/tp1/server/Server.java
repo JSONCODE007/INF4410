@@ -96,41 +96,42 @@ public class Server implements ServerInterface {
 	}
 
 	@Override
-	public byte[] get(String name, String checkSum) throws RemoteException {
+	public byte[]  get(String name, String checkSum) throws RemoteException {
 
 		for(CustomFile customFile : listOfElements){
 			if(customFile.getName().equals(name)){
-				if(checkSum.equals("-1") || (customFile.getCheckSum() != null && !customFile.getCheckSum().equals(checkSum))){
+				//TODO:la deuxieme condition est jamais verifier
+				if(checkSum.equals("-1") || (!customFile.getCheckSum().equals(checkSum))){
 					System.out.println("new file to get -1");
 					return customFile.getContent();
 				}
 			}
 		}
+
 		System.out.println("je retourne null");
-			//TODO:erreru si le fichier nexiste pas 
-			//on nenvoie le fichier que lorsqu'il est vraiment necessaire 
-			return null;
-		}
-
-		@Override
-		public boolean lock(String name, int clientId, int checkSum) throws RemoteException {
-
-			CustomFile file = null;
-			for(CustomFile customFile : listOfElements){
-				if(customFile.getName()==name){
-					file = customFile;
-				}
-			}
-
-			return false;
-		}
-
-		@Override
-		public String push(String name, byte[] content, int clientId)
-				throws RemoteException {
-			// TODO Auto-generated method stub
-
-
-			return null;
-		}
+		return null;
+		
 	}
+
+	@Override
+	public byte[] lock(String name, int clientId, String checkSum) throws RemoteException {
+
+		CustomFile file = null;
+		for(CustomFile customFile : listOfElements){
+			if(customFile.getName()==name){
+				file = customFile;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public String push(String name, byte[] content, int clientId)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+
+
+		return null;
+	}
+}
