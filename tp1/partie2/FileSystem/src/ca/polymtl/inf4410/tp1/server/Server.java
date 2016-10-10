@@ -125,7 +125,8 @@ public class Server implements ServerInterface {
 			}
 		}
 		//if file was founded in the list of files
-		if(fileToLock!=null){
+		if(fileToLock!= null){
+			System.out.println("file is founded");
 			if(!fileToLock.isLocked()){
 				System.out.println("file not  locked");
 				if(checkSum.equals("-1") || (!fileToLock.getCheckSum().equals(checkSum))){
