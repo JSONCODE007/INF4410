@@ -38,40 +38,35 @@ public class Client {
 			distantHostname = args[0];
 			operation = args.length>1 ? args[1]:null;
 			argument = args.length>2  ? args[2]:null;
-			System.out.println("current operation "+ operation);
 		}
 
-		Client client = new Client(distantHostname,operation,argument);
-		client.run();
+		Client client = new Client(distantHostname);
+		client.run(operation,argument);
 	}
 
 
 	private ServerInterface distantServerStub = null;
-	private String operation = null;
-	private String argument = null;
 
-	public Client(String distantServerHostname,String op,String arg) {
+	public Client(String distantServerHostname) {
 		super();
 
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new SecurityManager());
 		}
 
-
 		if (distantServerHostname != null) {
 			distantServerStub = loadServerStub(distantServerHostname);
-			operation = op ;
-			argument = arg;
-			System.out.println("test id = " + operation +argument);
 		}
 	}
 
-	private void run() throws NoSuchAlgorithmException, IOException {
+	private void run(String operation,String fileName) throws NoSuchAlgorithmException, IOException {
 
-		System.out.println("Client started" );
+		System.out.println("Client started  \n" );
 
-		if (distantServerStub != null) {
-			performOperation();
+		if (distantServerStub != null && operation !=null) {
+			performOperation(operation,fileName);
+		}else{
+			System.out.println("Provide an argument to interact wiht the server");
 		}
 	}
 
@@ -97,40 +92,47 @@ public class Client {
 	 * @throws NoSuchAlgorithmException 
 	 * 
 	 */
-	private void performOperation() throws IOException, NoSuchAlgorithmException{
-		System.out.println("------perform operation ------");
+	private void performOperation(String operation,String fileName) throws IOException, NoSuchAlgorithmException{
+
+		//create or get the file containing the client id
+		int clientId = getClientId();	
+
 		try {
+
 			switch(operation){
+
 			case "create":
-				String createResult = distantServerStub.create(argument);
+
+				String createResult = distantServerStub.create(fileName);
 				System.out.println(createResult);
-				//createTest();
 				break;
+
 			case "list":
-				List<String> fileList = new ArrayList<String>();
-				fileList = distantServerStub.list();
-				for (String string : fileList) {
+
+				List<String> listResult = new ArrayList<String>();
+				listResult = distantServerStub.list();
+				for (String string : listResult) {
 					System.out.println(string);
 				}
 				break;
+
 			case "syncLocalDir":
-				
-				List<CustomFile> fileListDistant = new ArrayList<CustomFile>();
-				HashMap<String,byte[]> fileMap = distantServerStub.syncLocalDir();
-				for (Entry<String, byte[]> file : fileMap.entrySet()) {
+
+				HashMap<String,byte[]> syncLocalDirResult = distantServerStub.syncLocalDir();
+				for (Entry<String, byte[]> file : syncLocalDirResult.entrySet()) {
 					Utils.WriteFileInClientDirectory(file.getKey(),file.getValue());
 				}
 
 				break;
+
 			case "get":
 
-				File f = new File(argument);
+				File f = new File(fileName);
 				if(!f.exists()) { 
-					System.out.println("in a new please");
-					byte[] fileContent = distantServerStub.get(argument, "-1");
-					System.out.println("in a new please");
+					byte[] fileContent = distantServerStub.get(fileName, "-1");
 					if(fileContent!= null){
-						Utils.WriteFileInClientDirectory(argument,fileContent);
+						Utils.WriteFileInClientDirectory(fileName,fileContent);
+						System.out.println(Constant.FILE_UPLOADED);
 					}
 					else{
 						System.out.println(Constant.FILE_DOESNT_EXIST);
@@ -139,68 +141,81 @@ public class Client {
 				else{
 
 					String checkSum = Utils.getFileChecksum(f);
-					byte[] fileContent = distantServerStub.get(argument, checkSum);
-					System.out.println(checkSum);
+					byte[] fileContent = distantServerStub.get(fileName, checkSum);
 					if(fileContent!=null){
-						Utils.WriteFileInClientDirectory(argument, fileContent);
-					}
-
-					else{
+						Utils.WriteFileInClientDirectory(fileName, fileContent);
+						System.out.println(Constant.FILE_UPLOADED);
+					}	else {
 						System.out.println(Constant.FILE_SAME);
 					}
 				}
 
 				break;
+
 			case "lock":
 
-				File clientFile = new File(Constant.CLIENT_ID_FILE_NAME);
-				int clientId =  -1;
-				byte[] configContent  = null;
-				//parse configuration file to get clietn id or generate new 
-				if(clientFile.exists()) { 
-					System.out.println("un fichier de config existe deja !");
-					configContent = Utils.getFileContent(clientFile);
-					//TODO:check if file is not altered if id it there exists
-					clientId = Integer.parseInt(new String(configContent));
-
-				}else{
-					clientId = distantServerStub.generateClientId();
-					System.out.println("Client id = " + clientId);
-					configContent =  String.valueOf(clientId).getBytes();
-					Utils.WriteFileInClientDirectory(Constant.CLIENT_ID_FILE_NAME, configContent);
-				}
-
-				File fileToLock = new File(argument);  
+				File fileToLock = new File(fileName);  
 				String fileCheckSum = fileToLock.exists() ? Utils.getFileChecksum(fileToLock) : "-1"; 
-				System.out.println("file to lock checsum"+fileCheckSum);
-				byte[] lockContent = distantServerStub.lock(argument, clientId,fileCheckSum);
-				if(lockContent !=null){
-					Utils.WriteFileInClientDirectory(argument, lockContent);
-					System.out.println(Constant.FILE_IN_EDIT_STATE(argument));
+				byte[] lockContent = distantServerStub.lock(fileName, clientId,fileCheckSum);
+				if(lockContent !=null ){
+					Utils.WriteFileInClientDirectory(fileName, lockContent);
+					System.out.println(Constant.FILE_IN_EDIT_STATE(fileName));
 				}else{
-					System.out.println("fichier verouille ou inexistant");
+					System.out.println("fichier verouille par un autre utilisateur  ou inexistant sur le serveur!");
 				}
 
 				break;
 			case "push":
-				byte[] clientconfigContent = Utils.getFileContent(new File(Constant.CLIENT_ID_FILE_NAME));
-				//TODO:check if file is not altered if id it there exists
-				int currentClientId = Integer.parseInt(new String(clientconfigContent));
 
-				byte[] toPushContent  = Utils.getFileContent(new File(argument));
-
-				String pushResponse = distantServerStub.push(argument, toPushContent, currentClientId);
-
+				File fileToPush = new File(fileName);  
+				byte[] toPushContent  = Utils.getFileContent(fileToPush);
+				String pushResponse = distantServerStub.push(fileName, toPushContent, clientId);
 				System.out.println(pushResponse);
 
 				break;
 
+			default:
+				System.out.println("This operation is not supported !");
 			}
-		}catch (RemoteException e) {
+		} catch (RemoteException e) {
 			System.out.println("Erreur: " + e.getMessage());
 		}
+
+		System.out.println();
 	}	
 
+	/***
+	 * recuperer le fichier de .client_id ou en creer un 
+	 * @return
+	 * @throws RemoteException
+	 */
+	private int getClientId() throws RemoteException {
 
+		File clientFile = new File(Constant.CLIENT_ID_FILE_NAME);
+		int clientId =  -1;
+		byte[] configContent  = null;
+		//parse configuration file to get clietn id or generate new 
+		if(clientFile.exists()) { 
+			try {
+				configContent = Utils.getFileContent(clientFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			//TODO:check if file is not altered if id it there exists
+			clientId = Integer.parseInt(new String(configContent)); 
+
+		}else{
+			clientId = distantServerStub.generateClientId();
+			configContent =  String.valueOf(clientId).getBytes();
+			try {
+				Utils.WriteFileInClientDirectory(Constant.CLIENT_ID_FILE_NAME, configContent);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return clientId;
+
+	}
 
 }

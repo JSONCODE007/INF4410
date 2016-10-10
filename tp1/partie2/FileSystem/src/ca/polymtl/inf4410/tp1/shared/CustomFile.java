@@ -1,20 +1,20 @@
 package ca.polymtl.inf4410.tp1.shared;
 
 public class CustomFile {
-	
+
 	private String _name;
 	private String _checkSum;
 	private boolean _isLocked;
 	private byte[] _content;
 	private int lockedBy;
 
-	
-	
+
+
 	/**
-	  * Constructor
-	  * 
-	  * @param name (required) name of the file to create
-	  */
+	 * Constructor
+	 * 
+	 * @param name (required) name of the file to create
+	 */
 	public CustomFile(String name) {
 		this._name = name;
 		this._checkSum = "";
@@ -79,8 +79,8 @@ public class CustomFile {
 	 * unlock a  file
 	 */
 	public void unlock() {
-			_isLocked = false;
-			 this.lockedBy =0;
+		this._isLocked = false;
+		this.lockedBy =0;
 	}
 
 }

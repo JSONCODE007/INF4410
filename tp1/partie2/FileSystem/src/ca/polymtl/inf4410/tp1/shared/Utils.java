@@ -70,7 +70,7 @@ public class Utils {
 	   
 	}
 	/***
-	 * 
+	 * ecrire un tableau de bytes dans un fichier
 	 * @return
 	 * @throws IOException 
 	 */
@@ -81,7 +81,7 @@ public class Utils {
 	}
 	
 	/***
-	 * 
+	 * recuperer le contenu en byte array d un fichier 
 	 * @return
 	 * @throws IOException 
 	 */

@@ -126,12 +126,9 @@ public class Server implements ServerInterface {
 		//file file to lock
 		for(int i = 0 ; i< listOfElements.size(); i++){
 			if(listOfElements.get(i).getName().equals(name)){
-				System.out.println("file is founded");
 				if(!listOfElements.get(i).isLocked()){
-					System.out.println("file not  locked");
 					listOfElements.get(i).lock(clientId);
 					if(checkSum.equals("-1") || (!listOfElements.get(i).getCheckSum().equals(checkSum))){
-						System.out.println("new file to get  in lock-1");
 						return listOfElements.get(i).getContent();
 					}
 				}else{
@@ -139,7 +136,6 @@ public class Server implements ServerInterface {
 				}
 			}
 		}
-		System.out.println("file not founded");
 
 		return null;
 	}
@@ -150,7 +146,7 @@ public class Server implements ServerInterface {
 			if(listOfElements.get(i).getName().equals(name)){			
 				
 				if(!listOfElements.get(i).isLocked()){
-					return Constant.NOT_LOCKED(name);
+					return Constant.LOCK_REQUIRED;
 				}else{
 					//TODO:client id is easy to hack 
 					if(listOfElements.get(i).getLockedBy() != clientId){
