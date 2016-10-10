@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -20,7 +18,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.rmi.CORBA.Util;
+
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
+import ca.polymtl.inf4410.tp1.shared.Utils;
 import ca.polymtl.inf4410.tp1.shared.CustomFile;
 import ca.polymtl.inf4410.tp1.shared.Constant;
 
@@ -33,8 +34,8 @@ public class Client {
 		String argument =null;
 		if (args.length > 0) {
 			distantHostname = args[0];
-			operation = args.length>1?args[1]:null;
-			argument = args.length>2 ?args[2]:null;
+			operation = args.length>1 ? args[1]:null;
+			argument = args.length>2  ? args[2]:null;
 			System.out.println("current operation "+ operation);
 		}
 
@@ -126,14 +127,13 @@ public class Client {
 
 				break;
 			case "get":
-				
 				File f = new File(argument);
 				if(!f.exists()) { 
-					CustomFile getResult = distantServerStub.get(argument, "-1");
-					if(getResult!=null){
-						FileOutputStream out = new FileOutputStream(getResult.getName());
-						out.write(getResult.getContent());
-						out.close();
+					CustomFile file = distantServerStub.get(argument, "-1");
+					if(file!=null){
+						FileOutputStream out = new FileOutputStream(file.getName());
+						out.write(file.getContent());
+						out.close();;
 					}
 					else{
 						System.out.println(Constant.FILE_DOESNT_EXIST);
@@ -142,15 +142,11 @@ public class Client {
 				
 				else{
 					MessageDigest md = MessageDigest.getInstance("MD5");
-					try (InputStream is = Files.newInputStream(Paths.get(argument));
-					     DigestInputStream dis = new DigestInputStream(is, md)) 
-					{
-					  /* Read decorated stream (dis) to EOF as normal... */
-					}
-					String digest = md.digest().toString();
+					
+					String digest = Utils.getFileChecksum(md,f);
 					
 					CustomFile getResult = distantServerStub.get(argument, digest);
-					
+					System.out.println(digest);
 					if(getResult!=null){
 						FileOutputStream out = new FileOutputStream(getResult.getName());
 						out.write(getResult.getContent());
@@ -161,10 +157,7 @@ public class Client {
 						System.out.println(Constant.FILE_SAME);
 					}
 				}
-				
-				
-				
-
+			
 				break;
 			case "lock":
 
