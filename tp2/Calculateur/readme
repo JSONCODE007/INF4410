@@ -1,0 +1,35 @@
+#interaction avec le programme serveur
+
+Pour partir le programme serveur . 
+Un numero de port est requis => numeroPort
+Le nombre de ressources que le serveur peut accepter  => q
+(FACULATIF) Le pourcentage de fausse reponses (a activer seulement en mode not secure) => m
+
+TRES IMPORTANT DEMARRER LE REGISTRE RMI AVEC LE MEME NUMERO DE PORT QUE CELUI DU SERVEUR CEST A DIRE 
+faire cd bin /  && rmiregisty numeroPort 
+
+// ensuite APPEL via
+./server numeroPort q m 
+
+Un message qui indique que le server est ready devrait safficher et le si le mode not secure est actif un message 
+devrait l'indiquer.
+
+#interaction avec le programme client 
+
+Tres inportant . avant de partir le programme client fournir dans le dossier Calculateur se trouve un fichier calculators
+qui contient la configuration des serveurs distants sous la forme 
+hostname numeroPort
+Exemple:  :Le fichier est deja cree et contient un exemple 
+
+
+Pour partir le client en mode  secure   faire 
+./client  CheminVersFichierDesOperations   
+
+Pour partir le client en mode non secure   faire 
+./client  CheminVersFichierDesOperations  notsecure 
+
+
+Si un fichier des operations est pas fourni le demarrage du client echoue .
+LE clietn indiquera au debut la liste des serveurs dont il a acces .
+
+ET enfin le resultat sera afficher a la console.
