@@ -1,0 +1,46 @@
+heat_template_version: 2014-10-16
+
+description: Déploiement d'un service Web sur une seule machine virtuelle
+
+parameters:
+ key_name:
+  type: string
+  description: Name of an existing key pair to use for the server
+  default: tp1Key
+ flavor:
+  type: string
+  description: Flavor for the server to be created
+  default: INF4410-mini
+ image:
+  type: string
+  description: Image ID or image name to use for the server
+  default: INF4410-Ubuntu-trusty-mini
+ private_network:
+  type: string
+  label: Private network name or ID
+  description: Network to attach instance to.
+  default: reseau-pour-tous
+resources:
+ server:
+  type: OS::Nova::Server
+  properties:
+   key_name: { get_param: key_name }
+   image: { get_param: image }
+   flavor: { get_param: flavor }
+   networks:
+    - network: { get_param: private_network }
+   user_data:
+    str_replace:
+      template: |
+       #!/bin/bash
+       echo "Start the web server"
+       sudo curl https://raw.githubusercontent.com/houssemmh/INF4410-TP3/master/server.py -o /home/server.py
+       sudo python /home/server.py
+      params:
+        nothing : jon_snow
+
+outputs:
+ server_networks:
+  description: The networks of the deployed server
+  value: { get_attr: [server, networks] }
+
