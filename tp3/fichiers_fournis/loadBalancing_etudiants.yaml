@@ -6,7 +6,7 @@ parameters:
   key_name:
    type: string
    description: Name of an existing key pair to use for the server
-   default: tp1Key
+   default: enigma
   image:
     type: string
     description: Image utilisee pour les serveurs

@@ -6,7 +6,7 @@ parameters:
  key_name:
   type: string
   description: Name of an existing key pair to use for the server
-  default: tp1Key
+  default: enigma
  flavor:
   type: string
   description: Flavor for the server to be created
