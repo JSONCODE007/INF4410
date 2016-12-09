@@ -8,12 +8,12 @@ allgo = threading.Condition()
 
 class ThreadClass(threading.Thread):
     def run(self):
-        url = urllib2.urlopen("http://132.207.12.236?name=krab")
-	print allgo
+        url = urllib2.urlopen("http://132.207.12.236:8000?name=krab")
+	print url
 
 for i in range(50):
     t = ThreadClass()
     t.start()
 
 print "done"
-quit()
+exit(1)
