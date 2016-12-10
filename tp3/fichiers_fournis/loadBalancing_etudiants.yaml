@@ -1,0 +1,80 @@
+heat_template_version: 2014-10-16
+
+description: A template to deploy a load balanced web server
+
+parameters:
+  key_name:
+   type: string
+   description: Name of an existing key pair to use for the server
+   default: enigma
+  image:
+    type: string
+    description: Image utilisee pour les serveurs
+    default: INF4410-Ubuntu-trusty-mini
+
+  flavor:
+    type: string
+    description: Flavor utilisee par les serveurs
+    default: INF4410-mini
+
+  subnet_id:
+    type: string
+    description: Sous-reseau dans lequel le load balancer sera situe
+    default: 22207ede-1911-47ca-b509-5698e34cf46c
+  private_network:
+   type: string
+   label: Private network name or ID
+   description: Network to attach instance to.
+   default: reseau-pour-tous
+resources:
+  web_nodes:
+      type: OS::Heat::ResourceGroup
+      properties:
+      #A completer
+       count: 2
+       resource_def:
+          type: OS::Nova::Server
+          properties:
+           flavor: { get_param: flavor }
+           image: { get_param: image }
+           key_name: { get_param: key_name }
+           networks: 
+             - network: { get_param: private_network }
+           user_data:
+             str_replace:
+               template: |
+                  #!/bin/bash
+                  echo "Start the web server"
+                  sudo curl https://raw.githubusercontent.com/houssemmh/INF4410-TP3/master/server.py -o /home/server.py
+                  sudo python /home/server.py
+               params:
+                  nothing : jon_snow
+  pool:
+   type: OS::Neutron::Pool
+   properties:
+     #A completer
+     monitors: [{get_resource: monitor}]
+     subnet_id: {get_param: subnet_id}
+     lb_method: ROUND_ROBIN
+     protocol: HTTP
+     vip:
+      protocol_port: 80
+  lbalancer:
+   type: OS::Neutron::LoadBalancer
+   #A completer
+   properties:
+    pool_id:  {get_resource: pool}
+    protocol_port: 80
+
+  monitor:
+      type: OS::Neutron::HealthMonitor
+      properties:
+       type: HTTP
+       delay: 10
+       max_retries: 2
+       timeout: 5
+
+outputs:
+  pool_ip_address:
+    value: {get_attr: [pool, vip, address]}
+    description: The IP address of the load balancing pool
